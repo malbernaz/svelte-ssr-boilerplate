@@ -1,0 +1,55 @@
+<style>
+  .stuff {
+    color: crimson
+  }
+
+  strong {
+    color: goldenrod
+  }
+
+  em {
+    color: royalblue
+  }
+</style>
+
+<section>
+  <p class="stuff">hello {{name}}</p>
+
+  <p>with triple curly braces {{html}} is compiled to {{{html}}}</p>
+
+  <p>Time is: <em>{{leftpad(h, 2, "0")}}:{{leftpad(m, 2, "0")}}:{{leftpad(s, 2, "0")}}</em></p>
+</section>
+
+<script>
+  import {
+    leftpad
+  } from "../lib/helpers";
+
+  export default {
+    data() {
+      return {
+        name: "everybody",
+        html: "<strong>stuff</strong>",
+        time: new Date()
+      }
+    },
+    oncreate() {
+      this.interval = setInterval(() => {
+        this.set({
+          time: new Date()
+        })
+      })
+    },
+    ondestroy() {
+      clearInterval(this.interval)
+    },
+    computed: {
+      h: time => time.getHours(),
+      m: time => time.getMinutes(),
+      s: time => time.getSeconds()
+    },
+    helpers: {
+      leftpad
+    }
+  }
+</script>
