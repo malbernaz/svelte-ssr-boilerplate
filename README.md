@@ -18,4 +18,4 @@ yarn start
 
 ## license
 
-MIT
+[MIT](https://github.com/malbernaz/svelte-ssr-boilerplate/blob/master/LICENSE)
