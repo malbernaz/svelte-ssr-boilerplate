@@ -57,11 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-# macOS
+# macOs
 *.DS_Store
-.AppleDouble
-.LSOverride
 
 # Project
-
-public/assets
+dist

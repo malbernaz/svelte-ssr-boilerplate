@@ -2,11 +2,9 @@
   .stuff {
     color: crimson
   }
-
   strong {
     color: goldenrod
   }
-
   em {
     color: royalblue
   }
@@ -21,35 +19,33 @@
 </section>
 
 <script>
-  import {
-    leftpad
-  } from "../lib/helpers";
+import { leftpad } from "../lib/helpers";
 
-  export default {
-    data() {
-      return {
-        name: "everybody",
-        html: "<strong>stuff</strong>",
+export default {
+  data() {
+    return {
+      name: "everyone",
+      html: "<strong>stuff</strong>",
+      time: new Date()
+    };
+  },
+  oncreate() {
+    this.interval = setInterval(() => {
+      this.set({
         time: new Date()
-      }
-    },
-    oncreate() {
-      this.interval = setInterval(() => {
-        this.set({
-          time: new Date()
-        })
-      })
-    },
-    ondestroy() {
-      clearInterval(this.interval)
-    },
-    computed: {
-      h: time => time.getHours(),
-      m: time => time.getMinutes(),
-      s: time => time.getSeconds()
-    },
-    helpers: {
-      leftpad
-    }
+      });
+    });
+  },
+  ondestroy() {
+    clearInterval(this.interval);
+  },
+  computed: {
+    h: time => time.getHours(),
+    m: time => time.getMinutes(),
+    s: time => time.getSeconds()
+  },
+  helpers: {
+    leftpad
   }
+};
 </script>

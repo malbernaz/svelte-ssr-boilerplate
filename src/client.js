@@ -1,10 +1,9 @@
 import App from "./components/App.html";
 
-const mnt = document.querySelector("main");
+const mnt = document.getElementById("mnt");
 
-let app;
 function boot(App) {
-  app = new App({ target: mnt });
+  new App({ target: ((mnt.innerHTML = ""), mnt) });
 }
 
 boot(App);
@@ -12,7 +11,6 @@ boot(App);
 if (module.hot) {
   module.hot.accept(["./components/App.html"], () => {
     const { default: NextApp } = require("./components/App.html");
-    app.destroy();
     boot(NextApp);
   });
 }

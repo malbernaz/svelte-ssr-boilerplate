@@ -1,52 +1,41 @@
-const path = require("path");
 const fs = require("fs");
-
 const webpack = require("webpack");
+const BabiliPlugin = require("babili-webpack-plugin");
 
-const babelConfig = JSON.parse(fs.readFileSync(".babelrc"));
+const serverConfig = require("./webpack/server.config");
+const clientConfig = require("./webpack/client.config");
 
-module.exports = (env = { dev: false }) => {
-  const plugins = [];
-  if (env.dev) {
-    plugins.push(
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin()
-    );
-  } else {
-    plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-  }
+const babelConfig = JSON.parse(fs.readFileSync(".babelrc", "utf-8"));
 
-  return {
-    entry: path.resolve("src", "index.js"),
-    output: {
-      filename: "bundle.js",
-      path: path.resolve("public", "assets"),
-      publicPath: "/assets/"
+module.exports = (env = { dev: false, server: false }) => {
+  const base = {
+    resolve: {
+      extensions: [".js", ".html"]
     },
     module: {
       rules: [
         {
           test: /\.(html|js)$/,
+          enforce: "pre",
+          exclude: /node_modules/,
+          loader: "eslint-loader"
+        },
+        {
+          test: /\.(html|js)$/,
           exclude: /node_modules/,
           loader: "babel-loader",
           options: babelConfig
-        },
-        {
-          test: /\.html$/,
-          exclude: /node_modules/,
-          loader: "svelte-loader"
         }
       ]
     },
-    devtool: "inline-source-map",
-    devServer: {
-      contentBase: path.resolve("public"),
-      compress: true,
-      port: 3000,
-      hotOnly: true,
-      clientLogLevel: "error",
-      historyApiFallback: true
-    },
-    plugins
+    devtool: env.dev ? "eval" : false,
+    bail: !env.dev,
+    plugins: [
+      new webpack.DefinePlugin({
+        "process.env.NODE_ENV": JSON.stringify(env.dev ? "development" : "production")
+      })
+    ].concat(env.dev ? [] : [new webpack.optimize.ModuleConcatenationPlugin(), new BabiliPlugin()])
   };
+
+  return env.server ? serverConfig(env, base) : clientConfig(env, base);
 };
