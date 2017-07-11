@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "an example on server rendering with svelte",
   "main": "dist/index.js",
-  "repository": "https://github.com/malbernaz/dribbble-shots.git",
+  "repository": "https://github.com/malbernaz/svelte-ssr-boilerplate.git",
   "author": "malbernaz <albernazmiguel@gmail.com>",
   "license": "MIT",
   "devDependencies": {
